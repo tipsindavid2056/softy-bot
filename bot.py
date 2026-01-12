@@ -8,7 +8,7 @@ MANAGER_CHAT_ID = 100885885
 CARD_NUMBER = "1111"  # Замените на реальный номер карты
 
 # URL вашего Mini App (замените после деплоя на Render)
-WEBAPP_URL = "https://your-app-name.onrender.com"
+WEBAPP_URL = "https://softy-webapp.onrender.com"
 
 bot = telebot.TeleBot(BOT_TOKEN)
 
