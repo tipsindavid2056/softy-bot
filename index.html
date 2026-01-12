@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Softy — Эко-грелки</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #F5F0E8;
+            --bg-secondary: #EDE6D9;
+            --text-primary: #3D3327;
+            --text-secondary: #6B5D4D;
+            --accent: #C4A77D;
+            --accent-dark: #A68B5B;
+            --white: #FFFCF7;
+            --shadow: rgba(61, 51, 39, 0.1);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 100%;
+            padding: 0 20px 120px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 30px 0 20px;
+            animation: fadeDown 0.8s ease;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 42px;
+            font-weight: 500;
+            letter-spacing: 8px;
+            color: var(--text-primary);
+            text-transform: uppercase;
+        }
+
+        .tagline {
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        /* Product Card */
+        .product-card {
+            background: var(--white);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px var(--shadow);
+            margin-top: 20px;
+            animation: fadeUp 0.8s ease 0.2s both;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .product-info {
+            padding: 28px 24px;
+        }
+
+        .product-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .product-description {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .features {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .feature {
+            background: var(--bg-secondary);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .feature-icon {
+            font-size: 14px;
+        }
+
+        .price-block {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 20px;
+            border-top: 1px solid var(--bg-secondary);
+        }
+
+        .price {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .price-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Order Form */
+        .order-section {
+            margin-top: 24px;
+            animation: fadeUp 0.8s ease 0.4s both;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--bg-secondary);
+            border-radius: 14px;
+            font-size: 16px;
+            font-family: 'Montserrat', sans-serif;
+            background: var(--white);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(196, 167, 125, 0.15);
+        }
+
+        .form-input::placeholder {
+            color: #B5A899;
+        }
+
+        /* Quantity Selector */
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            background: var(--white);
+            padding: 12px 24px;
+            border-radius: 14px;
+            border: 2px solid var(--bg-secondary);
+        }
+
+        .qty-btn {
+            width: 44px;
+            height: 44px;
+            border: none;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            font-size: 24px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-btn:active {
+            transform: scale(0.95);
+            background: var(--accent);
+            color: var(--white);
+        }
+
+        .qty-value {
+            font-size: 24px;
+            font-weight: 500;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        /* Main Button */
+        .main-button {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 16px 20px;
+            padding-bottom: calc(16px + env(safe-area-inset-bottom));
+            background: var(--white);
+            border-top: 1px solid var(--bg-secondary);
+        }
+
+        .order-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            border: none;
+            border-radius: 16px;
+            color: var(--white);
+            font-size: 16px;
+            font-weight: 500;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px rgba(196, 167, 125, 0.4);
+            letter-spacing: 1px;
+        }
+
+        .order-btn:active {
+            transform: scale(0.98);
+        }
+
+        .order-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .total-price {
+            text-align: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .total-price span {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 18px;
+        }
+
+        /* Success Screen */
+        .success-screen {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: var(--bg-primary);
+            z-index: 100;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .success-screen.active {
+            display: flex;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            animation: scaleIn 0.5s ease 0.2s both;
+        }
+
+        .success-icon svg {
+            width: 50px;
+            height: 50px;
+            stroke: var(--white);
+            stroke-width: 3;
+            fill: none;
+        }
+
+        .success-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+
+        .success-text {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Animations */
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Payment Info */
+        .payment-info {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            border: 2px dashed var(--accent);
+        }
+
+        .payment-title {
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .card-number {
+            font-size: 22px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            color: var(--text-primary);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .copy-btn {
+            margin-top: 12px;
+            padding: 10px 20px;
+            background: var(--bg-secondary);
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:active {
+            background: var(--accent);
+            color: var(--white);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">Softy</div>
+            <div class="tagline">Натуральное тепло</div>
+        </header>
+
+        <div class="product-card">
+            <img src="product.png" alt="Softy Эко-грелка" class="product-image">
+            <div class="product-info">
+                <h1 class="product-title">Эко-грелка Softy</h1>
+                <p class="product-description">
+                    Натуральная грелка с наполнителем из вишнёвых косточек. 
+                    Нагрейте в микроволновке — и наслаждайтесь мягким теплом до 2 часов.
+                </p>
+                <div class="features">
+                    <span class="feature">
+                        <span class="feature-icon">🌿</span> 100% эко
+                    </span>
+                    <span class="feature">
+                        <span class="feature-icon">♨️</span> 2 часа тепла
+                    </span>
+                    <span class="feature">
+                        <span class="feature-icon">🚚</span> Доставка
+                    </span>
+                </div>
+                <div class="price-block">
+                    <div>
+                        <div class="price-label">Цена</div>
+                        <div class="price">250 000 сум</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="order-section">
+            <h2 class="section-title">Оформить заказ</h2>
+            
+            <div class="form-group">
+                <label class="form-label">Количество</label>
+                <div class="quantity-selector">
+                    <button class="qty-btn" onclick="changeQty(-1)">−</button>
+                    <span class="qty-value" id="quantity">1</span>
+                    <button class="qty-btn" onclick="changeQty(1)">+</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Ваше имя</label>
+                <input type="text" class="form-input" id="name" placeholder="Введите имя">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Телефон</label>
+                <input type="tel" class="form-input" id="phone" placeholder="+998 90 123 45 67">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Адрес доставки</label>
+                <input type="text" class="form-input" id="address" placeholder="Город, улица, дом, квартира">
+            </div>
+
+            <div class="payment-info">
+                <div class="payment-title">Карта для оплаты</div>
+                <div class="card-number" id="cardNumber">1111</div>
+                <button class="copy-btn" onclick="copyCard()">Скопировать номер</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-button">
+        <div class="total-price">Итого: <span id="totalPrice">250 000 сум</span></div>
+        <button class="order-btn" onclick="submitOrder()">Оформить заказ</button>
+    </div>
+
+    <div class="success-screen" id="successScreen">
+        <div class="success-icon">
+            <svg viewBox="0 0 24 24">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        </div>
+        <h2 class="success-title">Заказ принят!</h2>
+        <p class="success-text">
+            Спасибо за заказ! 💛<br><br>
+            Наш менеджер свяжется с вами<br>для подтверждения доставки.
+        </p>
+    </div>
+
+    <script>
+        // Telegram WebApp
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+
+        // Установка цветов темы
+        document.documentElement.style.setProperty('--tg-theme-bg-color', tg.themeParams.bg_color || '#F5F0E8');
+
+        let quantity = 1;
+        const pricePerItem = 250000;
+
+        function changeQty(delta) {
+            quantity = Math.max(1, Math.min(10, quantity + delta));
+            document.getElementById('quantity').textContent = quantity;
+            updateTotal();
+        }
+
+        function updateTotal() {
+            const total = quantity * pricePerItem;
+            document.getElementById('totalPrice').textContent = formatPrice(total) + ' сум';
+        }
+
+        function formatPrice(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+        }
+
+        function copyCard() {
+            const cardNumber = document.getElementById('cardNumber').textContent;
+            navigator.clipboard.writeText(cardNumber).then(() => {
+                tg.showAlert('Номер карты скопирован!');
+            }).catch(() => {
+                // Fallback
+                const input = document.createElement('input');
+                input.value = cardNumber;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                tg.showAlert('Номер карты скопирован!');
+            });
+        }
+
+        function submitOrder() {
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const address = document.getElementById('address').value.trim();
+
+            if (!name) {
+                tg.showAlert('Пожалуйста, введите ваше имя');
+                return;
+            }
+            if (!phone) {
+                tg.showAlert('Пожалуйста, введите номер телефона');
+                return;
+            }
+            if (!address) {
+                tg.showAlert('Пожалуйста, введите адрес доставки');
+                return;
+            }
+
+            const total = quantity * pricePerItem;
+            
+            // Отправка данных в бота
+            const orderData = {
+                name: name,
+                phone: phone,
+                address: address,
+                quantity: quantity,
+                total: total,
+                product: 'Эко-грелка Softy'
+            };
+
+            tg.sendData(JSON.stringify(orderData));
+
+            // Показ экрана успеха
+            document.getElementById('successScreen').classList.add('active');
+
+            // Закрытие через 3 секунды
+            setTimeout(() => {
+                tg.close();
+            }, 3000);
+        }
+
+        // Заполнение данных из Telegram если есть
+        if (tg.initDataUnsafe.user) {
+            const user = tg.initDataUnsafe.user;
+            if (user.first_name) {
+                document.getElementById('name').value = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+            }
+        }
+    </script>
+</body>
+</html>
